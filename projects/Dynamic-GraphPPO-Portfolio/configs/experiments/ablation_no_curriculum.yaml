@@ -1,0 +1,77 @@
+# configs/experiments/ablation_no_curriculum.yaml
+# 消融实验：iTransformer + MORL，但关闭课程学习
+# 用于验证课程学习对最终性能的贡献
+# 复现方法：python scripts/train.py --config configs/experiments/ablation_no_curriculum.yaml
+
+seed: 42
+data_file_path: "CSI100_stock_data_with_factors.pkl"
+index_data_path: "CSI100_index.pkl"
+max_assets: 190
+max_days: 2500
+seq_len: 60
+corr_window: 10
+corr_threshold: 0.3
+train_ratio: 0.7
+val_ratio: 0.2
+
+encoder:
+  hidden_dim: 128
+  num_layers: 4
+  dropout: 0.1
+  edge_bias_scale: 0.3
+  edge_bias_temp: 2.0
+  use_signed_agg: false
+  encoder_type: "itransformer"
+
+policy:
+  hidden: 256
+  alpha_scale: 0.5
+  alpha_min: 0.001
+  temperature: 10
+  max_pos: 0.2
+  use_cls_for_value: true
+  freeze_encoder: false
+
+engine:
+  initial_capital: 1000000
+  transaction_cost_rate: 0.002
+  impact_cost_factor: 0.001
+  min_trade_amount: 5000
+  max_position_ratio: 0.2
+
+reward:
+  lambda_turnover: 0.05
+
+curriculum:
+  enabled: false
+  config_file: null
+
+ppo:
+  gamma: 0.99
+  lam: 0.95
+  clip_ratio: 0.2
+  vf_coef: 0.5
+  ent_coef: 0.01
+  lr: 0.0003
+  minibatch_size: 16
+  update_epochs: 4
+
+horizon: 128
+epochs: 30
+
+morl:
+  enabled: true
+  aux_weight: 0.5
+  alpha: 1.0
+  beta: 0.5
+  use_grad_surgery: true
+  adaptive_weights: true
+
+adapter:
+  smooth_weights: true
+  smooth_rho: 0.3
+
+output:
+  result_json: "runs/ablation_no_curriculum/results.json"
+  plot_val: "runs/ablation_no_curriculum/val_nav.png"
+  plot_test: "runs/ablation_no_curriculum/test_nav.png"

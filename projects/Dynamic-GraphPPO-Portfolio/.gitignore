@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# 训练输出（不追踪，体积大）
+runs/
+!runs/.gitkeep
+
+# 数据文件（不上传原始数据）
+*.pkl
+*.csv
+*.h5
+*.hdf5
+
+# 模型权重（体积大，通过 Release 发布）
+*.pth
+*.pt
+*.ckpt
+# pretrained/ 目录下的权重也排除
+pretrained/*.pth
+pretrained/*.pt
+
+# 实验结果图（可重新生成）
+results/figures/*.png
+results/figures/*.pdf
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# 日志
+*.log

@@ -1,0 +1,33 @@
+# configs/curriculum/default_3stage.yaml
+# 默认3阶段课程学习配置（难度渐进）
+
+stages:
+  - name: Stage-1-Warmup
+    epochs: 8
+    max_pos: 0.30
+    cost: 0.001
+    lambda_turnover: 0.02
+    loss_weight:
+      mse: 1.0
+      ic: 0.0
+      return: 0.0
+
+  - name: Stage-2-Balance
+    epochs: 10
+    max_pos: 0.25
+    cost: 0.002
+    lambda_turnover: 0.04
+    loss_weight:
+      mse: 0.5
+      ic: 0.5
+      return: 0.0
+
+  - name: Stage-3-Finetune
+    epochs: 12
+    max_pos: 0.20
+    cost: 0.003
+    lambda_turnover: 0.05
+    loss_weight:
+      mse: 0.0
+      ic: 0.2
+      return: 1.0

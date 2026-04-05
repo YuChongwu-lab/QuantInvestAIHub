@@ -1,0 +1,107 @@
+# =============================================================================
+# configs/default.yaml — 默认完整配置
+# 所有可调参数集中于此，复现实验时只需修改本文件或使用 --config 指向其他配置
+# =============================================================================
+
+# -------------------- 随机种子 --------------------
+seed: 42
+
+# -------------------- 数据路径 --------------------
+data_file_path: "CSI100_stock_data_with_factors.pkl"
+index_data_path: null          # 指数基准文件路径（推荐填写），格式见 README；null 则用股票池等权均值
+
+# -------------------- 数据加载参数 --------------------
+max_assets: 190
+max_days: 2500
+
+# -------------------- 图数据集构建参数 --------------------
+seq_len: 60
+corr_window: 10
+corr_threshold: 0.3
+
+# -------------------- 数据集划分 --------------------
+train_ratio: 0.7
+val_ratio: 0.2
+# test_ratio: 0.1  （自动推断）
+
+# -------------------- 编码器参数 --------------------
+encoder:
+  hidden_dim: 128
+  num_layers: 4
+  dropout: 0.1
+  edge_bias_scale: 0.3
+  edge_bias_temp: 2.0
+  use_signed_agg: false
+  encoder_type: "itransformer"   # "vanilla" 或 "itransformer"
+# node_feat_dim、num_assets、seq_len 在运行时从数据自动推断
+
+# -------------------- 策略网络参数 --------------------
+policy:
+  hidden: 256
+  alpha_scale: 0.5
+  alpha_min: 0.001
+  temperature: 10
+  max_pos: null               # null 表示不限制单资产上限
+  use_cls_for_value: true
+  freeze_encoder: false
+
+# -------------------- 回测引擎参数 --------------------
+engine:
+  initial_capital: 1000000
+  transaction_cost_rate: 0.002
+  impact_cost_factor: 0.001
+  min_trade_amount: 5000
+  max_position_ratio: 0.2
+
+# -------------------- 奖励配置 --------------------
+reward:
+  lambda_turnover: 0.05
+
+# -------------------- 课程学习 --------------------
+curriculum:
+  enabled: true
+  config_file: null             # 留空则使用默认3阶段配置
+  # 渐进式课程参数（config_file 为 null 时才生效，需手动取消注释）
+  # progressive:
+  #   num_stages: 5
+  #   total_epochs: 40
+  #   start_max_pos: 0.35
+  #   end_max_pos: 0.15
+  #   start_cost: 0.0005
+  #   end_cost: 0.004
+  #   start_lambda: 0.01
+  #   end_lambda: 0.08
+
+# -------------------- PPO 训练参数 --------------------
+ppo:
+  gamma: 0.99
+  lam: 0.95
+  clip_ratio: 0.2
+  vf_coef: 0.5
+  ent_coef: 0.01
+  lr: 0.0003
+  minibatch_size: 16
+  update_epochs: 4
+
+horizon: 128
+epochs: 30    # 非课程学习模式下的训练轮数
+
+# -------------------- 多目标优化（MORL）--------------------
+morl:
+  enabled: true
+  aux_weight: 0.5
+  alpha: 1.0
+  beta: 0.5
+  use_grad_surgery: true
+  adaptive_weights: true
+
+# -------------------- 回测适配器参数 --------------------
+adapter:
+  smooth_weights: true
+  smooth_rho: 0.3
+
+# -------------------- 结果保存路径 --------------------
+output:
+  result_json: "runs/results.json"
+  plot_val: "runs/val_nav.png"
+  plot_test: "runs/test_nav.png"
