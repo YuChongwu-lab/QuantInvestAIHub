@@ -23,29 +23,6 @@
 - **在线微调**：每步推理前对预测头进行一步微调，带验证集回滚，防止负迁移
 
 ---
-
-## 文件结构
-
-```
-.
-├── config.py                                      # 统一超参数配置（所有模块共享）
-├── data.py                                        # 数据加载与滑动窗口构建
-├── models.py                                      # 模型定义（TransformerBlock / PatchTSTBackbone / ProceedAdapter）
-├── losses.py                                      # DirectionalLoss（方向感知加权损失）
-├── TCVAE.py                                       # 时序条件 VAE 与概念编码器
-├── train_utils.py                                 # 训练函数（预训练 / Adapter 训练 / 在线微调）
-├── validation_framework.py                        # 通用 Trainer、EarlyStopping、split_train_val
-├── proceed_diffusion_augmentation.py              # 扩散模型定义与 DiffusionAugmentor
-├── proceed_diffusion_augmentation_with_validation.py  # 带验证集的扩散增强训练器
-├── run_experiment.py                              # 主实验入口（run_stock + __main__）
-├── hypersearch_multi_obj.py                       # 多目标超参数搜索（Optuna，MSE + DA 帕累托前沿）
-├── quick_search.py                                # 快速超参数搜索（少量试验，用于验证流程）
-├── drift_analysis.py                              # 概念表示与分布漂移可视化分析
-├── requirements.txt
-├── .gitignore
-└── checkpoints/                                   # 训练检查点（自动创建，不提交内容）
-```
-
 ---
 
 ## 快速上手
